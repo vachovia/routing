@@ -12,6 +12,7 @@ import {
   CareerDetails,
   CareersError,
   Contact,
+  contactAction,
   Faq,
   NotFound,
   careersLoader,
@@ -26,7 +27,7 @@ const router = createBrowserRouter(
 
       <Route path="help" element={<HelpLayout />}>
         <Route path="faq" element={<Faq />} />
-        <Route path="contact" element={<Contact />} />
+        <Route path="contact" element={<Contact />} action={contactAction} />
       </Route>
 
       <Route

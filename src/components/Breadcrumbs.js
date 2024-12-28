@@ -4,7 +4,7 @@ export default function Breadcrumbs() {
 
   const location = useLocation();
 
-  console.log(`Breadcrumbs: ${location}`);
+  console.log(`Breadcrumbs: `, location);
 
   let currentLink = "";
 
