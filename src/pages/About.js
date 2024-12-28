@@ -1,11 +1,19 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+// eslint-disable-next-line
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function About() {
+  const navigate = useNavigate();
   const [user, setUser] = useState("Vlad");
 
+  // if (!user) {
+  //   return <Navigate to="/" replace={true} />;
+  // }
+
+  // replace: true removes from history about page
+  // when we try to navigate back after logout  
   if (!user) {
-    return <Navigate to="/" replace={true} />;
+    navigate("/", { replace: true });
   }
 
   return (
