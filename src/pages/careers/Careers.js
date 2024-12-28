@@ -1,30 +1,35 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCareersAction } from "./../../redux/slice/careers/actions";
 
 export default function Careers() {
-  const careers = useLoaderData() || [];
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCareersAction());
+  }, [dispatch]);
+
+  const { careers, error, loading } = useSelector((state) => state?.careers);
 
   return (
     <>
-      {careers.length ? (<div className="careers">
-        {careers.map((career) => (
-          <Link to={career.id.toString()} key={career.id}>
-            <p>{career.title}</p>
-            <p>Based in {career.location}</p>
-          </Link>
-        ))}
-      </div>) : (
-        <div>No careers to show</div>
-      )}      
+      {loading ? (
+        <h2 className="careers-loading">Loading...</h2>
+      ) : error ? (
+        <h2 className="careers-error">{error}</h2>
+      ) : careers.length ? (
+        <div className="careers">
+          {careers.map((career) => (
+            <Link to={`${career.id}`} key={career.id}>
+              <p>{career.title}</p>
+              <p>Based in {career.location}</p>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <h2 className="careers-empty">No careers to show</h2>
+      )}
     </>
   );
 }
-
-export const careersLoader = async () => {
-  const res = await fetch("http://localhost:3001/careers");
-
-  if (!res.ok) {
-    throw Error("Could not fetch the list of careers");
-  }
-
-  return res.json();
-};

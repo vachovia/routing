@@ -4,19 +4,17 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+
 import { RootLayout, HelpLayout, CareersLayout } from "./layouts";
+
 import {
   Home,
   About,
   Careers,
   CareerDetails,
-  CareersError,
   Contact,
-  contactAction,
   Faq,
   NotFound,
-  careersLoader,
-  careerDetailsLoader
 } from "./pages";
 
 const router = createBrowserRouter(
@@ -27,23 +25,12 @@ const router = createBrowserRouter(
 
       <Route path="help" element={<HelpLayout />}>
         <Route path="faq" element={<Faq />} />
-        <Route path="contact" element={<Contact />} action={contactAction} />
+        <Route path="contact" element={<Contact />} />
       </Route>
 
-      <Route
-        path="careers"
-        element={<CareersLayout />}
-        errorElement={<CareersError />}
-      >
-        {" "}
-        {/* Interesting attribute errorElement !!!!!!!!! */}
-        <Route index element={<Careers />} loader={careersLoader} />
-        <Route
-          path=":id"
-          element={<CareerDetails />}
-          loader={careerDetailsLoader}
-        />
-        {/* We can use errorElement only for CareerDetails !!!!!!!!! */}
+      <Route path="careers" element={<CareersLayout />}>
+        <Route index element={<Careers />} />
+        <Route path=":id" element={<CareerDetails />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

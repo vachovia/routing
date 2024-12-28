@@ -4,8 +4,6 @@ export default function Breadcrumbs() {
 
   const location = useLocation();
 
-  console.log(`Breadcrumbs: `, location);
-
   let currentLink = "";
 
   const crumbs = location.pathname

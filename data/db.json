@@ -42,5 +42,12 @@
       "salary": 30000,
       "location": "London, UK"
     }
+  ],
+  "contacts": [
+    {
+      "email": "admin@bookstore.com",
+      "message": "Hello World",
+      "id": 1
+    }
   ]
 }

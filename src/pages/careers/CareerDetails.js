@@ -1,21 +1,25 @@
-import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCareerDetailsAction } from "./../../redux/slice/careers/actions";
 
 export default function CareerDetails() {
   const { id } = useParams();
-  const career = useLoaderData() || {};
-
-  const [domLoaded, setDomLoaded] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setDomLoaded(true);
-  }, []);
+    dispatch(getCareerDetailsAction({id}));
+  }, [id, dispatch]);
 
-  console.log(`route -> careers/${id}`);
+  const { career, error, loading } = useSelector((state) => state?.careers);
 
   return (
     <>
-      {domLoaded ? (
+      {loading ? (
+        <h2 className="career-loading">Loading...</h2>
+      ) : error ? (
+        <h2 className="career-error">{error}</h2>
+      ) : career ? (
         <div className="career-details">
           <h2>Career Details for {career.title}</h2>
           <p>Starting salary: {career.salary}</p>
@@ -34,16 +38,3 @@ export default function CareerDetails() {
     </>
   );
 }
-
-export const careerDetailsLoader = async ({ params }) => {
-  const { id } = params; // provided by react
-  console.log(`loader function: id=${id}`);
-
-  const res = await fetch("http://localhost:3001/careers/" + id);
-
-  if (!res.ok) {
-    throw Error("Could not find that career.");
-  }
-
-  return res.json();
-};

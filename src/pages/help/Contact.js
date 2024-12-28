@@ -1,44 +1,64 @@
-import { Form, redirect, useActionData } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {createContactAction} from "../../redux/slice/contacts/actions";
 
 export default function Contact() {
-  const data = useActionData();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [c, setC] = useState({
+    id: Math.random()*100,
+    email: "",
+    message: "",
+  });
+
+  //---Destructuring---
+  const { email, message } = c;
+
+  //---onChange Handler----
+  const onChange = (e) => {
+    setC({ ...c, [e.target.name]: e.target.value });
+  };
+
+  //---onSubmit Handler----
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(createContactAction(c));
+      navigate(`/`);
+      console.log(c);            
+    } catch (e) {}
+  };
 
   return (
     <div className="contact">
       <h3>Contact Us</h3>
-      <Form method="post" action="/help/contact">
+      <form onSubmit={onSubmit}>
         <label>
           <span>Your email:</span>
-          <input type="email" name="email" required />
+          <input
+            value={email}
+            type="email"
+            name="email"
+            placeholder="Enter Email"
+            onChange={onChange}
+            required
+          />
         </label>
         <label>
           <span>Your message:</span>
-          <textarea name="message" required></textarea>
+          <textarea
+            value={message}
+            name="message"
+            placeholder="Enter Message"
+            onChange={onChange}
+            required
+          ></textarea>
         </label>
-        <button>Submit</button>
 
-        {data && data.error && <p>{data.error}</p>}
-      </Form>
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 }
-
-export const contactAction = async ({ request }) => {
-  const data = await request.formData();
-
-  const submission = {
-    email: data.get("email"),
-    message: data.get("message"),
-  };
-
-  console.log(submission);
-
-  // send your post request to API
-
-  if (submission.message.length < 10) {
-    return { error: "Message must be over 10 chars long." };
-  }
-
-  // redirect the user
-  return redirect("/");
-};

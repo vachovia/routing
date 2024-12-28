@@ -1,20 +1,30 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // eslint-disable-next-line
 import { Navigate, useNavigate } from "react-router-dom";
+import { logoutUserAction } from "../redux/slice/users/actions";
 
 export default function About() {
   const navigate = useNavigate();
-  const [user, setUser] = useState("Vlad");
+  const dispatch = useDispatch();
 
   // if (!user) {
   //   return <Navigate to="/" replace={true} />;
   // }
 
+  const { user } = useSelector((state) => state?.users);
+
   // replace: true removes from history about page
-  // when we try to navigate back after logout  
-  if (!user) {
-    navigate("/", { replace: true });
-  }
+  // when we try to navigate back after logout
+  useEffect(() => {
+    if (!user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
+
+  const handleLogout = () => {
+    dispatch(logoutUserAction());
+  };
 
   return (
     <div className="about">
@@ -41,7 +51,7 @@ export default function About() {
         quasi.
       </p>
 
-      <button onClick={() => setUser(null)}>Logout</button>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 }
