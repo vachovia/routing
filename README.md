@@ -1,5 +1,8 @@
 # Getting Started with Create React App
 
+### npm i -g json-server
+### json-server -p 3001 -w ./data/db.json
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -48,6 +48,16 @@
       "email": "admin@bookstore.com",
       "message": "Hello World",
       "id": 1
+    },
+    {
+      "email": "john@email.com",
+      "message": "Another message",
+      "id": 2
+    },
+    {
+      "email": "vlad@bookstore.com",
+      "message": "Third message",
+      "id": 3
     }
   ]
 }

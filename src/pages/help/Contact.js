@@ -8,7 +8,6 @@ export default function Contact() {
   const navigate = useNavigate();
 
   const [c, setC] = useState({
-    id: Math.random()*100,
     email: "",
     message: "",
   });
